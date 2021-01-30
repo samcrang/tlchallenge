@@ -1,6 +1,7 @@
+import pytest
 import responses
 
-from tlchallenge.pokedex import Pokedex, BASE_URL
+from tlchallenge.pokedex import Pokedex, PokemonNotFoundError, BASE_URL
 
 
 @responses.activate
@@ -93,6 +94,14 @@ def test_returns_english_alpha_sapphire_description_if_available():
     charizard = pokedex.fetch_pokemon("charizard")
 
     assert charizard.description == "Alpha-Sapphire English description"
+
+
+@responses.activate
+def test_raises_PokemonNotFoundError_if_pokeapi_returns_not_found():
+    responses.add(responses.GET, BASE_URL + "charizard", status=404)
+
+    with pytest.raises(PokemonNotFoundError):
+        Pokedex().fetch_pokemon("charizard")
 
 
 @responses.activate
