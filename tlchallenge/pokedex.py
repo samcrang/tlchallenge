@@ -8,9 +8,12 @@ class Pokedex:
     def fetch_pokemon(self, name):
         response = requests.get(BASE_URL + name).json()
 
-        description = response["flavor_text_entries"][0]["flavor_text"]
+        for entry in reversed(response["flavor_text_entries"]):
+            if entry["language"]["name"] == "en":
+                description = entry["flavor_text"]
+                break
 
-        cleaned_description = re.sub(re.compile(r'\s+'), ' ', description)
+        cleaned_description = re.sub(re.compile(r"\s+"), " ", description)
         return Pokemon(response["name"], cleaned_description)
 
 
