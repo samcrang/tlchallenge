@@ -1,7 +1,7 @@
 import pytest
 import responses
 
-from tlchallenge.pokedex import Pokedex, PokemonNotFoundError, BASE_URL
+from tlchallenge.pokedex import Pokedex, PokemonNotFoundError, PokeapiError, BASE_URL
 
 
 @responses.activate
@@ -101,6 +101,15 @@ def test_raises_PokemonNotFoundError_if_pokeapi_returns_not_found():
     responses.add(responses.GET, BASE_URL + "charizard", status=404)
 
     with pytest.raises(PokemonNotFoundError):
+        Pokedex().fetch_pokemon("charizard")
+
+
+@responses.activate
+@pytest.mark.parametrize("status", [400, 401, 500, 501])
+def test_raises_PokeapiError_if_pokeapi_returns_unsuccessful_status(status):
+    responses.add(responses.GET, BASE_URL + "charizard", status=status)
+
+    with pytest.raises(PokeapiError):
         Pokedex().fetch_pokemon("charizard")
 
 

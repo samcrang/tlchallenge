@@ -11,6 +11,9 @@ class Pokedex:
         if response.status_code == 404:
             raise PokemonNotFoundError()
 
+        if response.status_code >= 400:
+            raise PokeapiError()
+
         json = response.json()
 
         description = None
@@ -41,4 +44,8 @@ class Pokemon:
 
 
 class PokemonNotFoundError(Exception):
+    pass
+
+
+class PokeapiError(Exception):
     pass
