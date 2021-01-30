@@ -23,9 +23,10 @@ class Pokedex:
                     description = entry["flavor_text"]
                     break
 
-        cleaned_description = re.sub(re.compile(r"\s+"), " ", description)
+        return Pokemon(response["name"], self.__clean(description))
 
-        return Pokemon(response["name"], cleaned_description)
+    def __clean(self, string):
+        return re.sub(re.compile(r"\s+"), " ", string)
 
 
 class Pokemon:
