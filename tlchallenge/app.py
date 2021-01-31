@@ -1,6 +1,6 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, abort
 
-from tlchallenge.pokedex import Pokedex
+from tlchallenge.pokedex import Pokedex, PokemonNotFoundError
 from tlchallenge.shakespeare import Shakespeare
 
 
@@ -12,7 +12,11 @@ def shakespearify_pokemon_description(name):
     pokedex = Pokedex()
     shakespeare = Shakespeare()
 
-    pokemon = pokedex.fetch_pokemon(name)
+    try:
+        pokemon = pokedex.fetch_pokemon(name)
+    except PokemonNotFoundError:
+        abort(404)
+
     translation = shakespeare.translate(pokemon.description)
 
     return jsonify({"name": pokemon.name, "description": translation})
