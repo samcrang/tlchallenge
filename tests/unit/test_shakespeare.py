@@ -19,7 +19,7 @@ def test_translates_given_text_to_shakespeare(fake_charizard_translation_respons
 
     assert (
         client.translate(description)
-        == "Charizard flies 'round the sky in search of powerful opponents. 't breathes fire of such most wondrous heat yond 't melts aught. However,  't nev'r turns its fiery breath on any opponent weaker than itself."
+        == "Charizard flies 'round the sky in search of powerful opponents. 't breathes fire of such most wondrous heat yond 't melts aught. However, 't nev'r turns its fiery breath on any opponent weaker than itself."
     )
 
 

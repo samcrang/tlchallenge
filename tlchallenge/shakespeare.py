@@ -1,3 +1,4 @@
+import re
 import requests
 
 URL = "https://api.funtranslations.com/translate/shakespeare.json"
@@ -10,7 +11,10 @@ class Shakespeare:
         if response.status_code >= 400:
             raise ShakespeareAPIError()
 
-        return response.json()["contents"]["translated"]
+        return self.__clean(response.json()["contents"]["translated"])
+
+    def __clean(self, string):
+        return re.sub(re.compile(r"\s+"), " ", string)
 
 
 class ShakespeareAPIError(Exception):
